@@ -7,10 +7,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    userId: localStorage.getItem('userId')
   },
   mutations: {
-
+    setUserId (state, payload) {
+      state.userId = payload
+    }
   },
   actions: {
     register ({commit}, payload) {
@@ -31,6 +33,26 @@ export default new Vuex.Store({
               alertify.message('Please check or re-enter your email and password')
             })
           console.log(err)
+        })
+    },
+    logIn ({ commit }, payload) {
+      user.signInWithEmailAndPassword(payload.email, payload.password)
+        .then(response => {
+          localStorage.setItem('userId', response.user.uid)
+          commit('setUserId', response.user.uid)
+          alertify
+            .alert('You have successfully logged in', function () {
+              alertify.message('You are now logged in')
+              window.location.reload()
+            })
+          // router.push({name: 'mainpage'})
+        })
+        .catch(error => {
+          alertify
+            .alert('Email or password is wrong', function () {
+              alertify.message('Please check or re-enter your email and password')
+            })
+          console.log(error)
         })
     }
   }

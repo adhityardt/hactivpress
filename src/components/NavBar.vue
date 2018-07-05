@@ -7,14 +7,14 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-          <div v-if="userId">
+          <!-- <div v-if="userId">
             <li class="nav-item active">
               <a class="nav-link" href="#">Balance Rp. {{usersDb.filter(function(el){return el['.key'] == userId})[0].balance}} <span class="sr-only">(current)</span></a>
             </li>
-          </div>
+          </div> -->
         </ul>
         <div v-if="userId">
-          <button class="btn btn-primary" data-toggle="modal" data-target="#addItemModal" v-if="userId == 'e3DScum3mhe1WZyTa0v8AVvuHeM2'">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#addItemModal" >
             <img src="@/assets/glyphicons-433-plus.png" >
             Add an Article
           </button>  
@@ -43,8 +43,24 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
-  name: 'NavBar'
+  name: 'NavBar',
+  data () {
+    return {
+    }
+  },
+  computed: {
+    ...mapState([
+      'userId'
+    ])
+  },
+  methods: {
+    doLogOut () {
+      localStorage.removeItem('userId')
+      window.location.reload()
+    }
+  }
 }
 </script>
 
