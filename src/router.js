@@ -13,7 +13,7 @@ export default new Router({
       component: MainPage
     },
     {
-      path: '/autor/:authoridurl',
+      path: '/author/:authorid',
       name: 'authorpage',
       component: AuthorPage
     }

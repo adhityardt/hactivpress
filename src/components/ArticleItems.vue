@@ -8,19 +8,23 @@
         <button class="btn btn-light"> #{{article.category}}</button>
       </div>
       <div class="card-body">
-        <h6 style="text-align:left;">
-          <img src="@/assets/glyphicons-4-user.png" >
-          {{usersDb.filter(function(el){return el['.key'] == article.userId})[0].name}} posted :
-        </h6>
+        <router-link :to="{ path: `/author/${article.userId}`}" @click="setPickeUserIdLocal(article.userId)">
+          <button class="btn" @click="setPickeUserIdLocal(article.userId)">
+            <h6 style="text-align:left;">
+              <img src="@/assets/glyphicons-4-user.png" >
+              {{usersDb.filter(function(el){return el['.key'] == article.userId})[0].name}} posted :
+            </h6>
+          </button>
+        </router-link>
         <h2>{{article['.key']}}</h2>
       </div>
         <p>{{article.content}}</p>
         <div id="editButton" v-if="article.userId == userId">
-          <button class="btn btn-danger" @click="deleteAnswer(answer.key)"  >
+          <button class="btn btn-danger" @click="deleteArticle(article['.key'])"  >
             <img src="@/assets/glyphicons-257-delete.png" >  
             Delete Article
           </button>
-          <button data-toggle="modal" data-target="#updateAnswerModal" class="btn btn-warning" @click="editAnswer(answer.key)"  >
+          <button data-toggle="modal" data-target="#editArticleModal" class="btn btn-warning" @click="editAnswer(answer.key)"  >
             <img src="@/assets/glyphicons-151-edit.png" >  
             Edit Article
           </button>
@@ -46,6 +50,18 @@ export default {
     ...mapState([
       'userId'
     ])
+  },
+  methods: {
+    setPickeUserIdLocal(userId){
+      localStorage.setItem('userIdPicked', userId)
+      // this.$router.push({path: `/authorpage/${userId}`})
+    },
+    deleteArticle(articleKey){
+      db.ref('/Articles/').child(articleKey).remove()
+    },
+    editArticle(articleKey){
+      db.ref('/Articles/')
+    }
   }
 }
 </script>

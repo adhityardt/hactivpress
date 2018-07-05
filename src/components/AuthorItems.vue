@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div v-for="article of articlesDb" :key="article['.key']" class="card" style="margin-bottom:5px;">
+    <div v-for="(article, index) in articles" :key="index" class="card" style="margin-bottom:5px;">
       <div class="card-title">
         <h5>
           Category :
         </h5>
-        <button class="btn btn-light"> #{{article.category}}</button>
+        <button class="btn btn-light"> #{{article.data.category}}</button>
       </div>
       <div class="card-body">
         <h6 style="text-align:left;">
           <img src="@/assets/glyphicons-4-user.png" >
-          {{usersDb.filter(function(el){return el['.key'] == article.userId})[0].name}} posted :
+          {{usersDb.filter(function(el){return el['.key'] == $route.params.authorid})[0].name}} posted :
         </h6>
-        <h2>{{article['.key']}}</h2>
+        <h2>{{article.data.title}}</h2>
       </div>
-        <p>{{article.content}}</p>
-        <div id="editButton" v-if="article.userId == userId">
+        <p>{{article.data.content}}</p>
+        <div id="editButton" v-if="$route.params.authorid == userId">
           <button class="btn btn-danger" @click="deleteAnswer(answer.key)"  >
             <img src="@/assets/glyphicons-257-delete.png" >  
             Delete Article
@@ -32,10 +32,16 @@
 </template>
 
 <script>
+import router from '../router'
 import { db } from '../firebase.js'
 import { mapState } from 'vuex'
 export default {
   name : 'articleitem',
+  data () {
+    return{
+      articles: []
+    }
+  },
   firebase: {
     usersDb: db.ref('/Users/'),
     articlesDb: db.ref('/Articles/'),
@@ -46,7 +52,26 @@ export default {
     ...mapState([
       'userId'
     ])
+  },
+  methods:{
+    getArticle () {
+      db.ref('/Authors/' + localStorage.getItem('userIdPicked')).on('value', (snapshot) => {
+        let articleList = []
+        snapshot.forEach(snap => {
+          let result = {
+            key: snap.key,
+            data: snap.val()
+          }
+          articleList.push(result)
+        })
+        this.articles = articleList
+      })
+    }
+  },
+  created () {
+    this.getArticle()
   }
+
 }
 </script>
 
