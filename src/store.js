@@ -54,6 +54,32 @@ export default new Vuex.Store({
             })
           console.log(error)
         })
+    },
+    addArticleDb ({commit, state}, payload) {
+      db.ref('/Articles/').child(payload.title).set({
+        category: payload.category,
+        content: payload.content,
+        userId: state.userId
+      })
+        .then(response => {
+          db.ref('/Authors/').child(state.userId).push({
+            title: payload.title,
+            category: payload.category,
+            content: payload.content
+          })
+            .then(result => {
+              db.ref('/Category/').child(payload.category).push({
+                title: payload.title,
+                userId: state.userId,
+                content: payload.content
+              })
+              alertify.alert('Your article is succesfully uploaded')
+            }).catch(error => {
+              console.log(error)
+            })
+        }).catch(error => {
+          console.log(error)
+        })
     }
   }
 })

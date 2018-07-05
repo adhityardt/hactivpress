@@ -2,6 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueFire from 'vuefire'
+import wysiwyg from 'vue-wysiwyg'
+
+Vue.use(VueFire)
+Vue.use(wysiwyg, {})
 
 Vue.config.productionTip = false
 
