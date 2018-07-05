@@ -1,19 +1,19 @@
 <template>
   <div>
     <NavBar/>
-    <AuthorItems/>
+    <CategoryItems/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue'
-import AuthorItems from '@/components/AuthorItems.vue'
+import CategoryItems from '@/components/CategoryItems.vue'
 export default {
-  name: 'authorpage',
+  name: 'categorypage',
   components: {
     NavBar,
-    AuthorItems
+    CategoryItems
   }
 }
 </script>

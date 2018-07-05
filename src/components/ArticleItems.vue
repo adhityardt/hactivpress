@@ -5,7 +5,9 @@
         <h5>
           Category :
         </h5>
-        <button class="btn btn-light"> #{{article.category}}</button>
+        <router-link :to="{ path: `/author/${article.category}`}">
+          <button class="btn btn-light" @click="setPickedCategoryLocal(article.category)"> #{{article.category}}</button>
+        </router-link>
       </div>
       <div class="card-body">
         <router-link :to="{ path: `/author/${article.userId}`}" @click="setPickeUserIdLocal(article.userId)">
@@ -54,6 +56,10 @@ export default {
   methods: {
     setPickeUserIdLocal(userId){
       localStorage.setItem('userIdPicked', userId)
+      // this.$router.push({path: `/authorpage/${userId}`})
+    },
+    setPickedCategoryLocal(category){
+      localStorage.setItem('categoryPicked', category)
       // this.$router.push({path: `/authorpage/${userId}`})
     },
     deleteArticle(articleKey){
