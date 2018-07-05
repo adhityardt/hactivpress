@@ -5,7 +5,7 @@
         <h5>
           Category :
         </h5>
-        <router-link :to="{ path: `/author/${article.category}`}">
+        <router-link :to="{ path: `/category/${article.category}`}">
           <button class="btn btn-light" @click="setPickedCategoryLocal(article.category)"> #{{article.category}}</button>
         </router-link>
       </div>
